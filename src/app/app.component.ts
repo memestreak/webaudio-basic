@@ -10,5 +10,5 @@ import { MyformComponent } from './myform/myform.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ng-poc-form';
+  title = 'webaudio-basic';
 }
