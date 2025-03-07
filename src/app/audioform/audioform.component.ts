@@ -9,7 +9,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'; 
 
 @Component({
-  selector: 'app-myform',
+  selector: 'app-audioform',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -19,11 +19,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatButtonModule,
     MatButtonToggleModule
   ],
-  templateUrl: './myform.component.html',
-  styleUrl: './myform.component.css',
+  templateUrl: './audioform.component.html',
+  styleUrl: './audioform.component.css',
 })
 
-export class MyformComponent {
+export class AudioformComponent {
   myForm: FormGroup;
   enabledOrDisabled: string = 'disabled';
 
