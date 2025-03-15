@@ -1,9 +1,11 @@
-<form [formGroup]="myForm">
+<!-- This is the top-level component for non-boilerplate code. -->
+<form [formGroup]="audioControlsFormGroup">
   <p>
     Hz:
-    <mat-slider discrete min="0" max="100" step="1">
-      <input matSliderThumb formControlName="hz">
+    <mat-slider min="0" max="20000" step="1">
+      <input matSliderThumb formControlName="hzSlider">
     </mat-slider>
+    {{ displayFrequency }} Hz
   </p>
 
   <p>
@@ -14,11 +16,8 @@
   </p>
 
   <p>
-    <mat-button-toggle-group
-      hideSingleSelectionIndicator
-      formControlName="startStop">
-      <mat-button-toggle>Start</mat-button-toggle>
-      <mat-button-toggle>Stop</mat-button-toggle>
-    </mat-button-toggle-group>
-  <p>
+    <button mat-button (click)="toggleAudio()">
+      {{ audioControlsFormGroup.get('startStop')!.value ? 'Stop' : 'Start' }}
+    </button>
+  </p>
 </form>
