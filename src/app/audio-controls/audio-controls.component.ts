@@ -8,7 +8,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'; 
 
 @Component({
-  selector: 'app-audioform',
+  selector: 'app-audio-controls',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -18,10 +18,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatButtonModule,
     MatButtonToggleModule
   ],
-  templateUrl: './audioform.component.html',
-  styleUrl: './audioform.component.css',
+  templateUrl: './audio-controls.component.html',
+  styleUrl: './audio-controls.component.css',
 })
-export class AudioformComponent implements OnInit, OnDestroy {
+export class AudioControlsComponent implements OnInit, OnDestroy {
   audioControlsFormGroup: FormGroup;
   audioContext: AudioContext;
   oscillator: OscillatorNode;

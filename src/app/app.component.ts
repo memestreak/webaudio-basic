@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AudioformComponent } from './audioform/audioform.component';
+import { AudioControlsComponent } from './audio-controls/audio-controls.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,AudioformComponent],
+  imports: [
+    AudioControlsComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
