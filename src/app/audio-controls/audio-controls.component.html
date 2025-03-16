@@ -2,7 +2,7 @@
 <form [formGroup]="audioControlsFormGroup">
   <p>
     Hz:
-    <mat-slider min="0" max="20000" step="1">
+    <mat-slider min="20" max="20000" step="1">
       <input matSliderThumb formControlName="hzSlider">
     </mat-slider>
     {{ displayFrequency }} Hz

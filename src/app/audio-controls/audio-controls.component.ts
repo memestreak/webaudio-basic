@@ -7,6 +7,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider'; 
 import { MatButtonToggleModule } from '@angular/material/button-toggle'; 
 
+//const A_440 = 440; // Frequency of A4 note in Hz
+
+const FREQUENCY_DEFAULT_HZ = 440;  // Concert A
+const FREQUENCY_MAX = 100;
+
+const VOLUME_MAX = 100;
+const VOLUME_DEFAULT = 10;
+
 @Component({
   selector: 'app-audio-controls',
   standalone: true,
@@ -31,12 +39,26 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
   maxFreq = 20000; // Maximum audible frequency ~20kHz
   displayFrequency = this.minFreq;
 
+  /**
+   * Creates a form group for the audio controls.
+   *
+   * NOTE: An access modifier added to a contructor parameter automatically
+   *      creates a class property with the same name.
+   * 
+   * @param formBuilder 
+   */
   constructor(private formBuilder: FormBuilder) {
-    // Initialize the form with default values
+    // Calculate the initial slider position for 440Hz using the inverse of
+    // logarithmic mapping log(frequency/minFreq) / log(maxFreq/minFreq) =
+    // normalized value
+    const normalizedValue = Math.log(FREQUENCY_DEFAULT_HZ / this.minFreq) / Math.log(this.maxFreq / this.minFreq);
+    
+    const initialSliderValue = normalizedValue * 20000; // Scaling back to slider range
+
     this.audioControlsFormGroup = this.formBuilder.group({
-      hzSlider: [0], // Starting slider value for UI
-      hz: [this.minFreq], // Actual frequency used for audio
-      volume: [10],
+      hzSlider: [440],             // Starting slider value for UI
+      hz: [FREQUENCY_DEFAULT_HZ],  // Actual frequency used for audio
+      volume: [VOLUME_DEFAULT],    // Safe
       startStop: [false],
     });
 
@@ -45,7 +67,11 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
     this.oscillator = this.audioContext.createOscillator();
     this.gainNode = this.audioContext.createGain();
 
-    // Connect the oscillator to the gain node and the gain node to the destination
+    this.gainNode.gain.value = VOLUME_DEFAULT / 100;
+
+    this.oscillator.frequency.value = FREQUENCY_DEFAULT_HZ;
+
+    // Connect oscillator --> gainNode --> destination
     this.oscillator.connect(this.gainNode);
     this.gainNode.connect(this.audioContext.destination);
   }
