@@ -7,10 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider'; 
 import { MatButtonToggleModule } from '@angular/material/button-toggle'; 
 
-//const A_440 = 440; // Frequency of A4 note in Hz
-
 const FREQUENCY_DEFAULT_HZ = 440;  // Concert A
-const FREQUENCY_MAX = 100;
+const FREQUENCY_MIN_HZ = 20;
+const FREQUENCY_MAX_HZ = 20000;
 
 const VOLUME_MAX = 100;
 const VOLUME_DEFAULT = 10;
@@ -51,7 +50,8 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
     // Calculate the initial slider position for 440Hz using the inverse of
     // logarithmic mapping log(frequency/minFreq) / log(maxFreq/minFreq) =
     // normalized value
-    const normalizedValue = Math.log(FREQUENCY_DEFAULT_HZ / this.minFreq) / Math.log(this.maxFreq / this.minFreq);
+    const normalizedValue =
+      Math.log(FREQUENCY_DEFAULT_HZ / this.minFreq) / Math.log(this.maxFreq / this.minFreq);
     
     const initialSliderValue = normalizedValue * 20000; // Scaling back to slider range
 
@@ -99,21 +99,24 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Subscribe to slider changes
-    this.audioControlsFormGroup.get('hzSlider')!.valueChanges.subscribe(sliderValue => {
-      // Convert slider value (0-100) to a frequency using logarithmic scale
-      const normalizedValue = sliderValue / 20000;
-      const frequency = this.minFreq * Math.pow(this.maxFreq / this.minFreq, normalizedValue);
+    // Subscribe to silder changes
+    this.audioControlsFormGroup.get('hzSlider')!.valueChanges.subscribe(this.handleFrequencySliderChange.bind(this));
+  }
 
-      // Round for display
-      this.displayFrequency = Math.round(frequency);
+  // Handler for frequency slider changes
+  private handleFrequencySliderChange(sliderValue: number): void {
+    // Convert slider value (0-100) to a frequency using logarithmic scale
+    const normalizedValue = sliderValue / 20000;
+    const frequency = this.minFreq * Math.pow(this.maxFreq / this.minFreq, normalizedValue);
 
-      // Update the actual frequency value in the form for audio processing
-      this.audioControlsFormGroup.get('hz')!.setValue(frequency, {emitEvent: false});
+    // Round for display
+    this.displayFrequency = Math.round(frequency);
 
-      // Update the audio node if it's playing
-      this.updateFrequency(frequency);
-    });
+    // Update the actual frequency value in the form for audio processing
+    this.audioControlsFormGroup.get('hz')!.setValue(frequency, {emitEvent: false});
+
+    // Update the audio node if it's playing
+    this.updateFrequency(frequency);
   }
 
   // Handles the button toggle for start/stop.
