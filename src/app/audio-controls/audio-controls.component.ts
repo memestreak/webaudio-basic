@@ -57,7 +57,7 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     this.oscillator = this.audioContext.createOscillator();
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = VOLUME_DEFAULT / 100;
+    this.gainNode.gain.value = VOLUME_DEFAULT / VOLUME_MAX;
     this.oscillator.frequency.value = initialHz;
 
     // Wire things up: oscillator --> gainNode --> destination
