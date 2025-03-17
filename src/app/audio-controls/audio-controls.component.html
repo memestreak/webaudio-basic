@@ -10,9 +10,10 @@
 
   <p>
     Volume:
-    <mat-slider discrete min="0" max="100" step="1">
+    <mat-slider min="0" max="100" step="1">
       <input matSliderThumb formControlName="volume">
     </mat-slider>
+    {{ audioControlsFormGroup.get('volume')!.value }}%
   </p>
 
   <p>
